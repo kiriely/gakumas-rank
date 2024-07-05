@@ -1,10 +1,10 @@
 function calculate() {
-    // Get input values
+    // Get input values for final stat calculation
     let vo = parseInt(document.getElementById('vo').value) || 0;
     let da = parseInt(document.getElementById('da').value) || 0;
     let vi = parseInt(document.getElementById('vi').value) || 0;
 
-    // Calculate totals
+    // Calculate totals for final stat
     let total = 
         (vo > 1500 ? 1500 : vo) + 
         (da > 1500 ? 1500 : da) + 
@@ -14,7 +14,7 @@ function calculate() {
         (da + 30 > 1500 ? 1500 : da + 30) + 
         (vi + 30 > 1500 ? 1500 : vi + 30);
 
-    // Display results
+    // Display results for final stat
     document.getElementById('total').textContent = total;
     document.getElementById('total_bonus').textContent = total_bonus;
 
@@ -38,10 +38,10 @@ function calculate() {
     document.getElementById('rank_a').textContent = rank_a;
 }
 
-// Attach event listeners to input fields
+// Attach event listeners to input fields for final stat
 document.getElementById('vo').addEventListener('input', calculate);
 document.getElementById('da').addEventListener('input', calculate);
 document.getElementById('vi').addEventListener('input', calculate);
 
-// Initial calculation
+// Initial calculation for final stat
 calculate();

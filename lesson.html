@@ -3,98 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Score Calculation</title>
+    <title>Gakumas Live Score Calculation</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
- html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
-            position: relative;
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('Gakuen.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: center;
-            opacity: 0.5;
-            z-index: -1;
-        }
-
-        .vo-header, .vo { background-color: #ffcccc !important; }
-        .da-header, .da { background-color: #cce5ff !important; }
-        .vi-header, .vi { background-color: #fff5cc !important; }
-        .grey-header { background-color: #f8f9fa !important; }
-
-        .table td, .table th {
-            vertical-align: middle;
-            text-align: center;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        .row {
-            margin-top: 20px;
-        }
-        .col-left, .col-right {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h3 class="text-center">สำหรับคำนวณหาคะแนนที่ต้องทำในการ Live สอบปลายภาค</h3>
-        
+        <h1 class="text-center">ตัวช่วยคำนวณคะแนนในระหว่างเล่น</h1>
+
         <div class="row">
-            <div class="col-md-6 col-left">
-                <h4>Base Stats and Bonus</h4>
-                <table class="table table-bordered mt-3">
-                    <thead>
-                        <tr>
-                            <th class="grey-header">Status</th>
-                            <th class="vo-header">Vo</th>
-                            <th class="da-header">Da</th>
-                            <th class="vi-header">Vi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Base</td>
-                            <td><input type="number" id="base_vo" class="form-control vo" value="0"></td>
-                            <td><input type="number" id="base_da" class="form-control da" value="0"></td>
-                            <td><input type="number" id="base_vi" class="form-control vi" value="0"></td>
-                        </tr>
-                        <tr>
-                            <td>Bonus (%)</td>
-                            <td><input type="number" id="bonus_vo" class="form-control vo" value="0" step="0.01"></td>
-                            <td><input type="number" id="bonus_da" class="form-control da" value="0" step="0.01"></td>
-                            <td><input type="number" id="bonus_vi" class="form-control vi" value="0" step="0.01"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="col-md-6 col-right">
-                <h4>Final Stats and Calculations</h4>
+            <div class="col-md-6">
+                <h4 class="text-left">สำหรับคำนวณหาคะแนนที่ต้องทำในการ Live สอบปลายภาค</h4>
+                
+                <!-- Final Stat Table -->
                 <table class="table table-bordered mt-3">
                     <thead>
                         <tr>
@@ -121,6 +42,7 @@
                     </tbody>
                 </table>
 
+                <!-- Rank Memory Table -->
                 <table class="table table-bordered mt-3">
                     <thead>
                         <tr>
@@ -148,68 +70,266 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="col-md-6">
+                <h4 class="text-left">สำหรับคำนวณ Status รวม จากการเข้า Lesson ต่างๆ</h4>
+
+                <!-- Lesson Stat Calculate Table -->
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th class="grey-header">Status</th>
+                            <th class="vo-header">Vo</th>
+                            <th class="da-header">Da</th>
+                            <th class="vi-header">Vi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="grey-header">Base</td>
+                            <td><input type="number" id="base_vo" class="form-control vo" value="0"></td>
+                            <td><input type="number" id="base_da" class="form-control da" value="0"></td>
+                            <td><input type="number" id="base_vi" class="form-control vi" value="0"></td>
+                        </tr>
+                        <tr>
+                            <td class="grey-header">Bonus (%)</td>
+                            <td><input type="number" id="bonus_vo" class="form-control vo" value="0"></td>
+                            <td><input type="number" id="bonus_da" class="form-control da" value="0"></td>
+                            <td><input type="number" id="bonus_vi" class="form-control vi" value="0"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Turn Schedule Table -->
+                <div class="scrollable-table-container">
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th class="grey-header">เทิร์น</th>
+                                <th class="grey-header">Schedule</th>
+                                <th class="vo-header">Vo</th>
+                                <th class="da-header">Da</th>
+                                <th class="vi-header">Vi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <select id="schedule1" class="form-control">
+                                        <option value="-">-</option>
+                                        <option value="Vo">Vo</option>
+                                        <option value="Da">Da</option>
+                                        <option value="Vi">Vi</option>
+                                    </select>
+                                </td>
+                                <td id="vo1"></td>
+                                <td id="da1"></td>
+                                <td id="vi1"></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Event</td>
+                                <td id="vo2"></td>
+                                <td id="da2"></td>
+                                <td id="vi2"></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Event</td>
+                                <td id="vo3"></td>
+                                <td id="da3"></td>
+                                <td id="vi3"></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <select id="schedule4" class="form-control">
+                                        <option value="-">-</option>
+                                        <option value="Vo">Vo</option>
+                                        <option value="Da">Da</option>
+                                        <option value="Vi">Vi</option>
+                                        <option value="Sp Vo">Sp Vo</option>
+                                        <option value="Sp Da">Sp Da</option>
+                                        <option value="Sp Vi">Sp Vi</option>
+                                    </select>
+                                </td>
+                                <td id="vo4"></td>
+                                <td id="da4"></td>
+                                <td id="vi4"></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Event</td>
+                                <td id="vo5"></td>
+                                <td id="da5"></td>
+                                <td id="vi5"></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>
+                                    <select id="schedule6" class="form-control">
+                                        <option value="-">-</option>
+                                        <option value="Vo">Vo</option>
+                                        <option value="Da">Da</option>
+                                        <option value="Vi">Vi</option>
+                                        <option value="Sp Vo">Sp Vo</option>
+                                        <option value="Sp Da">Sp Da</option>
+                                        <option value="Sp Vi">Sp Vi</option>
+                                    </select>
+                                </td>
+                                <td id="vo6"></td>
+                                <td id="da6"></td>
+                                <td id="vi6"></td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>
+                                    <select id="schedule7" class="form-control">
+                                        <option value="-">-</option>
+                                        <option value="mid test bonus">mid test bonus</option>
+                                    </select>
+                                </td>
+                                <td id="vo7"></td>
+                                <td id="da7"></td>
+                                <td id="vi7"></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Event</td>
+                                <td id="vo8"></td>
+                                <td id="da8"></td>
+                                <td id="vi8"></td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Event</td>
+                                <td id="vo9"></td>
+                                <td id="da9"></td>
+                                <td id="vi9"></td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>
+                                    <select id="schedule10" class="form-control">
+                                        <option value="-">-</option>
+                                        <option value="Vo">Vo</option>
+                                        <option value="Da">Da</option>
+                                        <option value="Vi">Vi</option>
+                                        <option value="Sp Vo">Sp Vo</option>
+                                        <option value="Sp Da">Sp Da</option>
+                                        <option value="Sp Vi">Sp Vi</option>
+                                    </select>
+                                </td>
+                                <td id="vo10"></td>
+                                <td id="da10"></td>
+                                <td id="vi10"></td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Event</td>
+                                <td id="vo11"></td>
+                                <td id="da11"></td>
+                                <td id="vi11"></td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>
+                                    <select id="schedule12" class="form-control">
+                                        <option value="-">-</option>
+                                        <option value="Vo">Vo</option>
+                                        <option value="Da">Da</option>
+                                        <option value="Vi">Vi</option>
+                                        <option value="Sp Vo">Sp Vo</option>
+                                        <option value="Sp Da">Sp Da</option>
+                                        <option value="Sp Vi">Sp Vi</option>
+                                    </select>
+                                </td>
+                                <td id="vo12"></td>
+                                <td id="da12"></td>
+                                <td id="vi12"></td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>
+                                    <select id="schedule13" class="form-control">
+                                        <option value="-">-</option>
+                                        <option value="mid Vo">mid Vo</option>
+                                        <option value="mid Da">mid Da</option>
+                                        <option value="mid Vi">mid Vi</option>
+                                    </select>
+                                </td>
+                                <td id="vo13"></td>
+                                <td id="da13"></td>
+                                <td id="vi13"></td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>Event</td>
+                                <td id="vo14"></td>
+                                <td id="da14"></td>
+                                <td id="vi14"></td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>
+                                    <select id="schedule15" class="form-control">
+                                        <option value="-">-</option>
+                                        <option value="final Vo">final Vo</option>
+                                        <option value="final Da">final Da</option>
+                                        <option value="final Vi">final Vi</option>
+                                    </select>
+                                </td>
+                                <td id="vo15"></td>
+                                <td id="da15"></td>
+                                <td id="vi15"></td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>Final test bonus</td>
+                                <td id="vo16"></td>
+                                <td id="da16"></td>
+                                <td id="vi16"></td>
+                            </tr>
+                            <!-- Summary Rows -->
+                            <tr>
+                                <td class="grey-header">รวม (Max 1500)</td>
+                                <td id="total_max_1500_vo"></td>
+                                <td id="total_max_1500_da"></td>
+                                <td id="total_max_1500_vi"></td>
+                            </tr>
+                            <tr>
+                                <td class="grey-header">ค่าที่เกิน 1500</td>
+                                <td id="over_1500_vo"></td>
+                                <td id="over_1500_da"></td>
+                                <td id="over_1500_vi"></td>
+                            </tr>
+                            <tr>
+                                <td class="grey-header">รวมทุกค่า</td>
+                                <td colspan="3" id="total_all"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
+        <!-- Existing Links Table -->
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th class="grey-header" colspan="3">รวมลิงค์ต่างๆ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="https://docs.google.com/spreadsheets/d/1CdV4SVJFmZDkJ_wPZQ8jW1rVbe4QbIv87N2vWd7DOa4/edit?usp=sharing" target="_blank">ไกด์การเล่น</a></td>
+                    <td><a href="https://docs.google.com/spreadsheets/d/15wryfptFjV8pqod_WTTIXFsNNHhElmE-GiA7tjI9-Kk/edit?usp=sharing" target="_blank">แปลสกิลตัวละคร</a></td>
+                    <td><a href="https://docs.google.com/spreadsheets/d/1js5G_wSxok66GlytFvA6iWGnOREj_W4ZhBwIHjTPGxY/edit?usp=sharing" target="_blank">แปลสกิลซัพพอร์ต</a></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
-    <script>
-        function calculate() {
-            // Get base and bonus values
-            let base_vo = parseInt(document.getElementById('base_vo').value) || 0;
-            let base_da = parseInt(document.getElementById('base_da').value) || 0;
-            let base_vi = parseInt(document.getElementById('base_vi').value) || 0;
-            
-            let bonus_vo = parseFloat(document.getElementById('bonus_vo').value) || 0;
-            let bonus_da = parseFloat(document.getElementById('bonus_da').value) || 0;
-            let bonus_vi = parseFloat(document.getElementById('bonus_vi').value) || 0;
-
-            // Calculate final stats
-            let vo = Math.floor(base_vo * (1 + bonus_vo/100));
-            let da = Math.floor(base_da * (1 + bonus_da/100));
-            let vi = Math.floor(base_vi * (1 + bonus_vi/100));
-
-            // Update the existing input fields
-            document.getElementById('vo').value = vo;
-            document.getElementById('da').value = da;
-            document.getElementById('vi').value = vi;
-
-            // Calculate totals
-            let total = vo + da + vi;
-            let total_bonus = 
-                (vo + 30 > 1500 ? 1500 : vo + 30) + 
-                (da + 30 > 1500 ? 1500 : da + 30) + 
-                (vi + 30 > 1500 ? 1500 : vi + 30);
-
-            // Display results
-            document.getElementById('total').textContent = total;
-            document.getElementById('total_bonus').textContent = total_bonus;
-
-            // Calculate rank scores
-            let L6 = total_bonus;
-
-            let rank_s = (L6 * 2.3 + 1700 + 3450 > 13000) 
-                ? Math.floor((13000 - (L6 * 2.3 + 1700 + 3450)) / 0.04) + 20000 
-                : Math.floor((13000 - (L6 * 2.3 + 1700 + 3450)) / 0.02) + 30000;
-
-            let rank_aplus = (L6 * 2.3 + 1700 + 2250 > 11500) 
-                ? "ผ่าน" 
-                : Math.floor((11500 - ((L6 * 2.3) + 1700 + ((5000 * 0.3) + (5000 * 0.15)))) / 0.08) + 10000;
-
-            let rank_a = (L6 * 2.3 + 1700 + (50000 * 0.3 + 5000 * 0.15) > 10000) 
-                ? "ผ่าน" 
-                : Math.floor((10000 - (L6 * 2.3 + 1700 + (50000 * 0.3 + 50000 * 0.15))) / 0.08) + 10000;
-
-            document.getElementById('rank_s').textContent = rank_s;
-            document.getElementById('rank_aplus').textContent = rank_aplus;
-            document.getElementById('rank_a').textContent = rank_a;
-        }
-
-        // Attach event listeners to all input fields
-        ['base_vo', 'base_da', 'base_vi', 'bonus_vo', 'bonus_da', 'bonus_vi'].forEach(id => {
-            document.getElementById(id).addEventListener('input', calculate);
-        });
-
-        // Initial calculation
-        calculate();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
