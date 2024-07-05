@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Score Calculation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+ html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            position: relative;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Gakuen.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .vo-header, .vo { background-color: #ffcccc !important; }
+        .da-header, .da { background-color: #cce5ff !important; }
+        .vi-header, .vi { background-color: #fff5cc !important; }
+        .grey-header { background-color: #f8f9fa !important; }
+
+        .table td, .table th {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .row {
+            margin-top: 20px;
+        }
+        .col-left, .col-right {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 class="text-center">สำหรับคำนวณหาคะแนนที่ต้องทำในการ Live สอบปลายภาค</h3>
+        
+        <div class="row">
+            <div class="col-md-6 col-left">
+                <h4>Base Stats and Bonus</h4>
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th class="grey-header">Status</th>
+                            <th class="vo-header">Vo</th>
+                            <th class="da-header">Da</th>
+                            <th class="vi-header">Vi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Base</td>
+                            <td><input type="number" id="base_vo" class="form-control vo" value="0"></td>
+                            <td><input type="number" id="base_da" class="form-control da" value="0"></td>
+                            <td><input type="number" id="base_vi" class="form-control vi" value="0"></td>
+                        </tr>
+                        <tr>
+                            <td>Bonus (%)</td>
+                            <td><input type="number" id="bonus_vo" class="form-control vo" value="0" step="0.01"></td>
+                            <td><input type="number" id="bonus_da" class="form-control da" value="0" step="0.01"></td>
+                            <td><input type="number" id="bonus_vi" class="form-control vi" value="0" step="0.01"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="col-md-6 col-right">
+                <h4>Final Stats and Calculations</h4>
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="align-middle grey-header">Final Stat</th>
+                            <th class="vo-header">Vo</th>
+                            <th class="da-header">Da</th>
+                            <th class="vi-header">Vi</th>
+                        </tr>
+                        <tr>
+                            <td><input type="number" id="vo" class="form-control vo" value="0"></td>
+                            <td><input type="number" id="da" class="form-control da" value="0"></td>
+                            <td><input type="number" id="vi" class="form-control vi" value="0"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="grey-header">รวม (ไม่มีโบนัส)</td>
+                            <td colspan="3" id="total">0</td>
+                        </tr>
+                        <tr>
+                            <td class="grey-header">รวม (มีโบนัส)</td>
+                            <td colspan="3" id="total_bonus">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th class="grey-header">Rank</th>
+                            <th class="grey-header">คะแนน Memory</th>
+                            <th class="grey-header">คะแนนที่ต้องทำ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>S</td>
+                            <td>13000</td>
+                            <td id="rank_s">0</td>
+                        </tr>
+                        <tr>
+                            <td>A+</td>
+                            <td>11500</td>
+                            <td id="rank_aplus">0</td>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td>10000</td>
+                            <td id="rank_a">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            // Get base and bonus values
+            let base_vo = parseInt(document.getElementById('base_vo').value) || 0;
+            let base_da = parseInt(document.getElementById('base_da').value) || 0;
+            let base_vi = parseInt(document.getElementById('base_vi').value) || 0;
+            
+            let bonus_vo = parseFloat(document.getElementById('bonus_vo').value) || 0;
+            let bonus_da = parseFloat(document.getElementById('bonus_da').value) || 0;
+            let bonus_vi = parseFloat(document.getElementById('bonus_vi').value) || 0;
+
+            // Calculate final stats
+            let vo = Math.floor(base_vo * (1 + bonus_vo/100));
+            let da = Math.floor(base_da * (1 + bonus_da/100));
+            let vi = Math.floor(base_vi * (1 + bonus_vi/100));
+
+            // Update the existing input fields
+            document.getElementById('vo').value = vo;
+            document.getElementById('da').value = da;
+            document.getElementById('vi').value = vi;
+
+            // Calculate totals
+            let total = vo + da + vi;
+            let total_bonus = 
+                (vo + 30 > 1500 ? 1500 : vo + 30) + 
+                (da + 30 > 1500 ? 1500 : da + 30) + 
+                (vi + 30 > 1500 ? 1500 : vi + 30);
+
+            // Display results
+            document.getElementById('total').textContent = total;
+            document.getElementById('total_bonus').textContent = total_bonus;
+
+            // Calculate rank scores
+            let L6 = total_bonus;
+
+            let rank_s = (L6 * 2.3 + 1700 + 3450 > 13000) 
+                ? Math.floor((13000 - (L6 * 2.3 + 1700 + 3450)) / 0.04) + 20000 
+                : Math.floor((13000 - (L6 * 2.3 + 1700 + 3450)) / 0.02) + 30000;
+
+            let rank_aplus = (L6 * 2.3 + 1700 + 2250 > 11500) 
+                ? "ผ่าน" 
+                : Math.floor((11500 - ((L6 * 2.3) + 1700 + ((5000 * 0.3) + (5000 * 0.15)))) / 0.08) + 10000;
+
+            let rank_a = (L6 * 2.3 + 1700 + (50000 * 0.3 + 5000 * 0.15) > 10000) 
+                ? "ผ่าน" 
+                : Math.floor((10000 - (L6 * 2.3 + 1700 + (50000 * 0.3 + 50000 * 0.15))) / 0.08) + 10000;
+
+            document.getElementById('rank_s').textContent = rank_s;
+            document.getElementById('rank_aplus').textContent = rank_aplus;
+            document.getElementById('rank_a').textContent = rank_a;
+        }
+
+        // Attach event listeners to all input fields
+        ['base_vo', 'base_da', 'base_vi', 'bonus_vo', 'bonus_da', 'bonus_vi'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculate);
+        });
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>
