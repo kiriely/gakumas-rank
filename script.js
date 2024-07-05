@@ -1,3 +1,26 @@
+// Modal toggle functionality
+const modal = document.getElementById("usageModal");
+const btn = document.getElementById("usageButton");
+const span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Existing calculate function and event listeners...
 function calculate() {
     // Get input values for final stat calculation
     let vo = parseInt(document.getElementById('vo').value) || 0;

@@ -69,6 +69,27 @@
                         </tr>
                     </tbody>
                 </table>
+        <!-- Button to open the modal -->
+        <button id="usageButton" class="btn">วิธีการใช้งาน</button>
+
+        <!-- The Modal -->
+        <div id="usageModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 class="text-center">วิธีการใช้งาน</h2>
+                <hr width="100%" size="4">
+                <p>
+                    <li>กรอก Base Status และ Bonus แบบรวมทุกอย่างแล้ว ให้เรียบร้อย ก่อนเข้าไป Produce </li>
+                    ในจากนั้นเลือกว่าจะฝึก Lesson อะไรบ้าง ในตาราง เพื่อคำนวน Stat สุดท้ายคร่าวๆ ว่าจะได้เท่าไหร่ ค่าที่ได้ไม่ควรเกิน 1400 เพราะ ระหว่างเล่น จะมีโบนัสค่าต่างๆ จากซัพพอร์ต หรือ การเข้า Classroom ที่จ่ายเลือดเพื่อเอา Status เพิ่มเติมได้<br><br>
+                    <li>ใช้ช่วยคำนวน ว่า จะเข้าอะไรดี ใน Stage หลังๆ เผื่อแต้มเกิน 1500 ไปเยอะ จะได้ไปอันอื่นแทน</li><br>
+                    <li>การเลือกเอา Base status หรือ Bonus Status ดี ถ้าเล่นเหมือนกันได้คะแนนเท่ากันหมด</li><br>
+                    <li>การคำนวน Rank memory ให้กรอก Final Status ที่เราทำได้ก่อนไปสอบไลฟ์ Final แล้ว </li>
+                    จะได้แต้มคะแนนที่ต้องทำในการสอบ Final สำหรับแรงค์ S,A+, A<br><br>
+                    <p class="ps">ปล. คะแนนที่ได้ คือคะแนนการ Clear แบบ Perfect เท่านั้น<br>
+                    ปล. คะแนนที่ต้องทำในการสอบ เพื่อทำ Rank อาจจะไม่ตรงกับความเป็นจริง</p>
+                </p>
+            </div>
+        </div>
             </div>
 
             <div class="col-md-6">
@@ -118,194 +139,194 @@
                                 <td>
                                     <select id="schedule1" class="form-control">
                                         <option value="-">-</option>
-                                        <option value="Vo">Vo</option>
-                                        <option value="Da">Da</option>
-                                        <option value="Vi">Vi</option>
+                                        <option value="Vo" class="vo" >Vo</option>
+                                        <option value="Da" class="da" >Da</option>
+                                        <option value="Vi" class="vi" >Vi</option>
                                     </select>
                                 </td>
-                                <td id="vo1"></td>
-                                <td id="da1"></td>
-                                <td id="vi1"></td>
+                                <td id="vo1" class="vo">0</td>
+                                <td id="da1" class="da">0</td>
+                                <td id="vi1" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>2</td>
                                 <td>Event</td>
-                                <td id="vo2"></td>
-                                <td id="da2"></td>
-                                <td id="vi2"></td>
+                                <td id="vo2" class="vo">0</td>
+                                <td id="da2" class="da">0</td>
+                                <td id="vi2" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>3</td>
                                 <td>Event</td>
-                                <td id="vo3"></td>
-                                <td id="da3"></td>
-                                <td id="vi3"></td>
+                                <td id="vo3" class="vo">0</td>
+                                <td id="da3" class="da">0</td>
+                                <td id="vi3" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>4</td>
                                 <td>
                                     <select id="schedule4" class="form-control">
                                         <option value="-">-</option>
-                                        <option value="Vo">Vo</option>
-                                        <option value="Da">Da</option>
-                                        <option value="Vi">Vi</option>
-                                        <option value="Sp Vo">Sp Vo</option>
-                                        <option value="Sp Da">Sp Da</option>
-                                        <option value="Sp Vi">Sp Vi</option>
+                                        <option value="Vo" class="vo" >Vo</option>
+                                        <option value="Da" class="da" >Da</option>
+                                        <option value="Vi" class="vi" >Vi</option>
+                                        <option value="Sp Vo" class="vo-header">Sp Vo</option>
+                                        <option value="Sp Da" class="da-header">Sp Da</option>
+                                        <option value="Sp Vi" class="vi-header">Sp Vi</option>
                                     </select>
                                 </td>
-                                <td id="vo4"></td>
-                                <td id="da4"></td>
-                                <td id="vi4"></td>
+                                <td id="vo4" class="vo">0</td>
+                                <td id="da4" class="da">0</td>
+                                <td id="vi4" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>5</td>
                                 <td>Event</td>
-                                <td id="vo5"></td>
-                                <td id="da5"></td>
-                                <td id="vi5"></td>
+                                <td id="vo5" class="vo">0</td>
+                                <td id="da5" class="da">0</td>
+                                <td id="vi5" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>6</td>
                                 <td>
                                     <select id="schedule6" class="form-control">
                                         <option value="-">-</option>
-                                        <option value="Vo">Vo</option>
-                                        <option value="Da">Da</option>
-                                        <option value="Vi">Vi</option>
-                                        <option value="Sp Vo">Sp Vo</option>
-                                        <option value="Sp Da">Sp Da</option>
-                                        <option value="Sp Vi">Sp Vi</option>
+                                        <option value="mid Vo" class="vo-header">mid Vo</option>
+                                        <option value="mid Da" class="da-header">mid Da</option>
+                                        <option value="mid Vi" class="vi-header">mid Vi</option>
                                     </select>
                                 </td>
-                                <td id="vo6"></td>
-                                <td id="da6"></td>
-                                <td id="vi6"></td>
+                                <td id="vo6" class="vo">0</td>
+                                <td id="da6" class="da">0</td>
+                                <td id="vi6" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>7</td>
                                 <td>
                                     <select id="schedule7" class="form-control">
                                         <option value="-">-</option>
-                                        <option value="mid test bonus">mid test bonus</option>
+                                        <option value="mid test bonus" class="grey-header">mid test bonus</option>
                                     </select>
                                 </td>
-                                <td id="vo7"></td>
-                                <td id="da7"></td>
-                                <td id="vi7"></td>
+                                <td id="vo7" class="vo">0</td>
+                                <td id="da7" class="da">0</td>
+                                <td id="vi7" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>8</td>
                                 <td>Event</td>
-                                <td id="vo8"></td>
-                                <td id="da8"></td>
-                                <td id="vi8"></td>
+                                <td id="vo8" class="vo">0</td>
+                                <td id="da8" class="da">0</td>
+                                <td id="vi8" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>9</td>
                                 <td>Event</td>
-                                <td id="vo9"></td>
-                                <td id="da9"></td>
-                                <td id="vi9"></td>
+                                <td id="vo9" class="vo">0</td>
+                                <td id="da9" class="da">0</td>
+                                <td id="vi9" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>10</td>
                                 <td>
                                     <select id="schedule10" class="form-control">
                                         <option value="-">-</option>
-                                        <option value="Vo">Vo</option>
-                                        <option value="Da">Da</option>
-                                        <option value="Vi">Vi</option>
-                                        <option value="Sp Vo">Sp Vo</option>
-                                        <option value="Sp Da">Sp Da</option>
-                                        <option value="Sp Vi">Sp Vi</option>
+                                        <option value="Vo" class="vo" >Vo</option>
+                                        <option value="Da" class="da" >Da</option>
+                                        <option value="Vi" class="vi" >Vi</option>
+                                        <option value="Sp Vo" class="vo-header">Sp Vo</option>
+                                        <option value="Sp Da" class="da-header">Sp Da</option>
+                                        <option value="Sp Vi" class="vi-header">Sp Vi</option>
                                     </select>
                                 </td>
-                                <td id="vo10"></td>
-                                <td id="da10"></td>
-                                <td id="vi10"></td>
+                                <td id="vo10" class="vo">0</td>
+                                <td id="da10" class="da">0</td>
+                                <td id="vi10" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>11</td>
                                 <td>Event</td>
-                                <td id="vo11"></td>
-                                <td id="da11"></td>
-                                <td id="vi11"></td>
+                                <td id="vo11" class="vo">0</td>
+                                <td id="da11" class="da">0</td>
+                                <td id="vi11" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>12</td>
                                 <td>
                                     <select id="schedule12" class="form-control">
                                         <option value="-">-</option>
-                                        <option value="Vo">Vo</option>
-                                        <option value="Da">Da</option>
-                                        <option value="Vi">Vi</option>
-                                        <option value="Sp Vo">Sp Vo</option>
-                                        <option value="Sp Da">Sp Da</option>
-                                        <option value="Sp Vi">Sp Vi</option>
+                                        <option value="Vo" class="vo" >Vo</option>
+                                        <option value="Da" class="da" >Da</option>
+                                        <option value="Vi" class="vi" >Vi</option>
+                                        <option value="Sp Vo" class="vo-header">Sp Vo</option>
+                                        <option value="Sp Da" class="da-header">Sp Da</option>
+                                        <option value="Sp Vi" class="vi-header">Sp Vi</option>
                                     </select>
                                 </td>
-                                <td id="vo12"></td>
-                                <td id="da12"></td>
-                                <td id="vi12"></td>
+                                <td id="vo12" class="vo">0</td>
+                                <td id="da12" class="da">0</td>
+                                <td id="vi12" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>13</td>
                                 <td>
                                     <select id="schedule13" class="form-control">
                                         <option value="-">-</option>
-                                        <option value="mid Vo">mid Vo</option>
-                                        <option value="mid Da">mid Da</option>
-                                        <option value="mid Vi">mid Vi</option>
+                                        <option value="Vo" class="vo" >Vo</option>
+                                        <option value="Da" class="da" >Da</option>
+                                        <option value="Vi" class="vi" >Vi</option>
+                                        <option value="Sp Vo" class="vo-header">Sp Vo</option>
+                                        <option value="Sp Da" class="da-header">Sp Da</option>
+                                        <option value="Sp Vi" class="vi-header">Sp Vi</option>
                                     </select>
                                 </td>
-                                <td id="vo13"></td>
-                                <td id="da13"></td>
-                                <td id="vi13"></td>
+                                <td id="vo13" class="vo">0</td>
+                                <td id="da13" class="da">0</td>
+                                <td id="vi13" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>14</td>
                                 <td>Event</td>
-                                <td id="vo14"></td>
-                                <td id="da14"></td>
-                                <td id="vi14"></td>
+                                <td id="vo14" class="vo">0</td>
+                                <td id="da14" class="da">0</td>
+                                <td id="vi14" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>15</td>
                                 <td>
                                     <select id="schedule15" class="form-control">
                                         <option value="-">-</option>
-                                        <option value="final Vo">final Vo</option>
-                                        <option value="final Da">final Da</option>
-                                        <option value="final Vi">final Vi</option>
+                                        <option value="Final Vo" class="vo-header">Final Vo</option>
+                                        <option value="Final Da" class="da-header">Final Da</option>
+                                        <option value="Final Vi" class="vi-header">Final Vi</option>
                                     </select>
                                 </td>
-                                <td id="vo15"></td>
-                                <td id="da15"></td>
-                                <td id="vi15"></td>
+                                <td id="vo15" class="vo">0</td>
+                                <td id="da15" class="da">0</td>
+                                <td id="vi15" class="vi">0</td>
                             </tr>
                             <tr>
                                 <td>16</td>
                                 <td>Final test bonus</td>
-                                <td id="vo16"></td>
-                                <td id="da16"></td>
-                                <td id="vi16"></td>
+                                <td id="vo16" class="vo">30</td>
+                                <td id="da16" class="da">30</td>
+                                <td id="vi16" class="vi">30</td>
                             </tr>
                             <!-- Summary Rows -->
                             <tr>
-                                <td class="grey-header">รวม (Max 1500)</td>
+                                <td class="grey-header" colspan="2">รวม (Max 1500)</td>
                                 <td id="total_max_1500_vo"></td>
                                 <td id="total_max_1500_da"></td>
                                 <td id="total_max_1500_vi"></td>
                             </tr>
                             <tr>
-                                <td class="grey-header">ค่าที่เกิน 1500</td>
+                                <td class="grey-header"colspan="2">ค่าที่เกิน 1500</td>
                                 <td id="over_1500_vo"></td>
                                 <td id="over_1500_da"></td>
                                 <td id="over_1500_vi"></td>
                             </tr>
                             <tr>
-                                <td class="grey-header">รวมทุกค่า</td>
+                                <td class="grey-header"colspan="2">รวมทุกค่า</td>
                                 <td colspan="3" id="total_all"></td>
                             </tr>
                         </tbody>
