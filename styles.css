@@ -1,0 +1,52 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    position: relative;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('Gakuen.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.vo-header { background-color: #ffcccc !important; }
+.da-header { background-color: #cce5ff !important; }
+.vi-header { background-color: #fff5cc !important; }
+.vo { background-color: #ffcccc !important; }
+.da { background-color: #cce5ff !important; }
+.vi { background-color: #fff5cc !important; }
+.grey-header { background-color: #f8f9fa !important; }
+
+.table td, .table th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table thead th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
