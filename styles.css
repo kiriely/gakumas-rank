@@ -26,13 +26,13 @@ body::before {
     z-index: -1;
 }
 
-.vo-header { background-color: #ea9999 ; color:#660000;}
-.da-header { background-color: #a4c2f4 ; color:#1c4587;}
-.vi-header { background-color: #ffe599 ; color:#7f6000;}
-.vo { background-color: #f4cccc ; color:#990000;}
-.da { background-color: #c9daf8 ; color:#1155cc;}
-.vi { background-color: #fff2cc ; color:#bf9000;}
-.grey-header { background-color: #f8f9fa ; }
+.vo-header { background-color: #ea9999 ; color:#660000;     text-align: center;}
+.da-header { background-color: #a4c2f4 ; color:#1c4587;     text-align: center;}
+.vi-header { background-color: #ffe599 ; color:#7f6000;     text-align: center;}
+.vo { background-color: #f4cccc ; color:#990000;    text-align: center;}
+.da { background-color: #c9daf8 ; color:#1155cc;    text-align: center;}
+.vi { background-color: #fff2cc ; color:#bf9000;    text-align: center;}
+.grey-header { background-color: #f8f9fa ;     text-align: center;}
 
 .table td, .table th {
     vertical-align: middle;
@@ -46,17 +46,19 @@ body::before {
 
 .container {
     background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    max-width: 900px;
 }
 
+
 .container .scrollable-table-container {
-    max-height: 400px; /* Adjust as needed */
+    max-height: 350px; /* Adjust as needed */
     overflow-y: auto;
 }
 
-/* Outline Button */
 /* Outline Button */
 .btn {
     background-color: transparent;
@@ -72,6 +74,19 @@ body::before {
 .btn:hover {
     background-color: #f39800;
     color: white;
+}
+
+.btn-text {
+    white-space: nowrap;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This ensures vertical alignment */
+    gap: 20px; /* Increased space between buttons */
+    margin-top: 5px; /* Reduced top margin to bring it closer to the table */
+    margin-bottom: 5px; /* Added bottom margin for balance */
 }
 
 .ps {
@@ -115,3 +130,41 @@ body::before {
     text-decoration: none;
     cursor: pointer;
 }
+
+.lesson-table {
+    width: 100%;
+    table-layout: fixed;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+.lesson-table th,
+.lesson-table td {
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+}
+
+/* Center all text in table cells */
+.lesson-table td {
+    text-align: center;
+}
+
+/* Style for the main headers */
+.lesson-table th {
+    font-weight: bold;
+}
+
+
+/* Maintain colored backgrounds for data cells */
+.lesson-table td.vo { background-color: #f4cccc; }
+.lesson-table td.da { background-color: #c9daf8; }
+.lesson-table td.vi { background-color: #fff2cc; }
+
+/* Specific style for the first column if needed */
+.lesson-table th:first-child,
+.lesson-table td:first-child {
+    text-align: center;
+}
+

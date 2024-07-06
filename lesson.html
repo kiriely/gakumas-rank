@@ -9,25 +9,25 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">ตัวช่วยคำนวณคะแนนในระหว่างเล่น</h1>
+        <h1 class="text-center">ตัวช่วยคำนวนคะแนนในระหว่างเล่น</h1>
 
         <div class="row">
             <div class="col-md-6">
-                <h4 class="text-left">สำหรับคำนวณหาคะแนนที่ต้องทำในการ Live สอบปลายภาค</h4>
+                <h4 class="text-center">สำหรับคำนวนหาคะแนนที่ต้องทำในการ Live สอบปลายภาค</h4>
                 
                 <!-- Final Stat Table -->
                 <table class="table table-bordered mt-3">
                     <thead>
                         <tr>
-                            <th rowspan="2" class="align-middle grey-header">Final Stat</th>
+                            <th rowspan="2" class="align-finaldle grey-header">Final Stat</th>
                             <th class="vo-header">Vo</th>
                             <th class="da-header">Da</th>
                             <th class="vi-header">Vi</th>
                         </tr>
                         <tr>
-                            <td><input type="number" id="vo" class="form-control vo" value="0"></td>
-                            <td><input type="number" id="da" class="form-control da" value="0"></td>
-                            <td><input type="number" id="vi" class="form-control vi" value="0"></td>
+                            <td><input type="number" id="Fvo" class="form-control vo" value="0"></td>
+                            <td><input type="number" id="Fda" class="form-control da" value="0"></td>
+                            <td><input type="number" id="Fvi" class="form-control vi" value="0"></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,10 +69,12 @@
                         </tr>
                     </tbody>
                 </table>
-        <!-- Button to open the modal -->
-        <button id="usageButton" class="btn">วิธีการใช้งาน</button>
 
-        <!-- The Modal -->
+        <!-- Button-->
+        <div class="button-container">
+            <button id="usageButton" class="btn"><span class="btn-text">วิธีการใช้งานตัวช่วยคำนวน</span></button>
+        </div>
+        <!-- How to use Modal -->
         <div id="usageModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -80,7 +82,7 @@
                 <hr width="100%" size="4">
                 <p>
                     <li>กรอก Base Status และ Bonus แบบรวมทุกอย่างแล้ว ให้เรียบร้อย ก่อนเข้าไป Produce </li>
-                    ในจากนั้นเลือกว่าจะฝึก Lesson อะไรบ้าง ในตาราง เพื่อคำนวน Stat สุดท้ายคร่าวๆ ว่าจะได้เท่าไหร่ ค่าที่ได้ไม่ควรเกิน 1400 เพราะ ระหว่างเล่น จะมีโบนัสค่าต่างๆ จากซัพพอร์ต หรือ การเข้า Classroom ที่จ่ายเลือดเพื่อเอา Status เพิ่มเติมได้<br><br>
+                    จากนั้นเลือกว่าจะฝึก Lesson อะไรบ้าง ในตาราง เพื่อคำนวน Stat สุดท้ายคร่าวๆ ว่าจะได้เท่าไหร่ ค่าที่ได้ไม่ควรเกิน 1400 เพราะ ระหว่างเล่น จะมีโบนัสค่าต่างๆ จากซัพพอร์ต หรือ การเข้า Classroom ที่จ่ายเลือดเพื่อเอา Status เพิ่มเติมได้<br><br>
                     <li>ใช้ช่วยคำนวน ว่า จะเข้าอะไรดี ใน Stage หลังๆ เผื่อแต้มเกิน 1500 ไปเยอะ จะได้ไปอันอื่นแทน</li><br>
                     <li>การเลือกเอา Base status หรือ Bonus Status ดี ถ้าเล่นเหมือนกันได้คะแนนเท่ากันหมด</li><br>
                     <li>การคำนวน Rank memory ให้กรอก Final Status ที่เราทำได้ก่อนไปสอบไลฟ์ Final แล้ว </li>
@@ -90,10 +92,193 @@
                 </p>
             </div>
         </div>
+        <!-- Lesson Modal -->
+        <div id="lessonModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 class="text-center">ตารางคะแนนในการฝึกแบบต่างๆ</h2>
+                        <hr width="100%" size="4">
+                        <table class="lesson-table status-table">
+                            <thead>
+                                <tr>
+                                    <th class="grey-header">Status</th>
+                                    <th class="vo-header">Vo</th>
+                                    <th class="da-header">Da</th>
+                                    <th class="vi-header">Vi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="grey-header">Bonus (%)</td>
+                                    <td type="number" id="lesson_bonus_vo" class="vo" value="0"></td>
+                                    <td type="number" id="lesson_bonus_da" class="da" value="0"></td>
+                                    <td type="number" id="lesson_bonus_vi" class="vi" value="0"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table lesson-table">
+                            <thead>
+                                <tr>
+                                    <th class="grey-header">Lesson</th>
+                                    <th class="grey-header">คะแนนที่ต้องทำ</th>
+                                    <th class="vo-header">Vo</th>
+                                    <th class="da-header">Da</th>
+                                    <th class="vi-header">Vi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="grey-header">turn 1</td>
+                                    <td class="grey-header" id="score_1">60</td>
+                                    <td type="number" id="lesson_vo_1" class="vo" value="0"></td>
+                                    <td type="number" id="lesson_da_1" class="da" value="0"></td>
+                                    <td type="number" id="lesson_vi_1" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="grey-header">turn 4</td>
+                                    <td class="grey-header" id="score_4">60</td>
+                                    <td type="number" id="lesson_vo_4" class="vo" value="0"></td>
+                                    <td type="number" id="lesson_da_4" class="da" value="0"></td>
+                                    <td type="number" id="lesson_vi_4" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="grey-header">turn 10</td>
+                                    <td class="grey-header" id="score_10">110</td>
+                                    <td type="number" id="lesson_vo_10" class="vo" value="0"></td>
+                                    <td type="number" id="lesson_da_10" class="da" value="0"></td>
+                                    <td type="number" id="lesson_vi_10" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="grey-header">turn 12</td>
+                                    <td class="grey-header" id="score_12">120</td>
+                                    <td type="number" id="lesson_vo_12" class="vo" value="0"></td>
+                                    <td type="number" id="lesson_da_12" class="da" value="0"></td>
+                                    <td type="number" id="lesson_vi_12" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="grey-header">turn 13</td>
+                                    <td class="grey-header" id="score_13">150</td>
+                                    <td type="number" id="lesson_vo_13" class="vo" value="0"></td>
+                                    <td type="number" id="lesson_da_13" class="da" value="0"></td>
+                                    <td type="number" id="lesson_vi_13" class="vi" value="0"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table lesson-table">
+                            <thead>
+                                <tr>
+                                    <th class="grey-header">SP Lesson</th>
+                                    <th class="grey-header">คะแนนที่ต้องทำ</th>
+                                    <th class="vo-header">Vo</th>
+                                    <th class="da-header">Da</th>
+                                    <th class="vi-header">Vi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="grey-header">turn 4</td>
+                                    <td class="grey-header" id="SP_score_4">90</td>
+                                    <td type="number" id="SP_lesson_vo_4" class="vo" value="0"></td>
+                                    <td type="number" id="SP_lesson_da_4" class="da" value="0"></td>
+                                    <td type="number" id="SP_lesson_vi_4" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="grey-header">turn 10</td>
+                                    <td class="grey-header" id="SP_score_10">170</td>
+                                    <td type="number" id="SP_lesson_vo_10" class="vo" value="0"></td>
+                                    <td type="number" id="SP_lesson_da_10" class="da" value="0"></td>
+                                    <td type="number" id="SP_lesson_vi_10" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="grey-header">turn 12</td>
+                                    <td class="grey-header" id="SP_score_12">200</td>
+                                    <td type="number" id="SP_lesson_vo_12" class="vo" value="0"></td>
+                                    <td type="number" id="SP_lesson_da_12" class="da" value="0"></td>
+                                    <td type="number" id="SP_lesson_vi_12" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="grey-header">turn 13</td>
+                                    <td class="grey-header" id="SP_score_13">220</td>
+                                    <td type="number" id="SP_lesson_vo_13" class="vo" value="0"></td>
+                                    <td type="number" id="SP_lesson_da_13" class="da" value="0"></td>
+                                    <td type="number" id="SP_lesson_vi_13" class="vi" value="0"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table lesson-table">
+                            <thead>
+                                <tr>
+                                    <th class="grey-header">Mid Lesson</th>
+                                    <th class="grey-header">คะแนนที่ต้องทำ</th>
+                                    <th class="vo-header">Vo</th>
+                                    <th class="da-header">Da</th>
+                                    <th class="vi-header">Vi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="vo-header">Vo</td>
+                                    <td class="grey-header" id="vo_mid_score">360</td>
+                                    <td type="number" id="vo_mid_lesson_vo" class="vo" value="0"></td>
+                                    <td type="number" id="vo_mid_lesson_da" class="da" value="0"></td>
+                                    <td type="number" id="vo_mid_lesson_vi" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="da-header">Da</td>
+                                    <td class="grey-header" id="da_mid_score">360</td>
+                                    <td type="number" id="da_mid_lesson_vo" class="vo" value="0"></td>
+                                    <td type="number" id="da_mid_lesson_da" class="da" value="0"></td>
+                                    <td type="number" id="da_mid_lesson_vi" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="vi-header">Vi</td>
+                                    <td class="grey-header" id="vi_mid_score">360</td>
+                                    <td type="number" id="vi_mid_lesson_vo" class="vo" value="0"></td>
+                                    <td type="number" id="vi_mid_lesson_da" class="da" value="0"></td>
+                                    <td type="number" id="vi_mid_lesson_vi" class="vi" value="0"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table lesson-table">
+                            <thead>
+                                <tr>
+                                    <th class="grey-header">Final Lesson</th>
+                                    <th class="grey-header">คะแนนที่ต้องทำ</th>
+                                    <th class="vo-header">Vo</th>
+                                    <th class="da-header">Da</th>
+                                    <th class="vi-header">Vi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="vo-header">Vo</td>
+                                    <td class="grey-header" id="vo_final_score">600</td>
+                                    <td type="number" id="vo_final_lesson_vo" class="vo" value="0"></td>
+                                    <td type="number" id="vo_final_lesson_da" class="da" value="0"></td>
+                                    <td type="number" id="vo_final_lesson_vi" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="da-header">Da</td>
+                                    <td class="grey-header" id="da_final_score">600</td>
+                                    <td type="number" id="da_final_lesson_vo" class="vo" value="0"></td>
+                                    <td type="number" id="da_final_lesson_da" class="da" value="0"></td>
+                                    <td type="number" id="da_final_lesson_vi" class="vi" value="0"></td>
+                                </tr>
+                                <tr>
+                                    <td class="vi-header">Vi</td>
+                                    <td class="grey-header" id="vi_final_score">600</td>
+                                    <td type="number" id="vi_final_lesson_vo" class="vo" value="0"></td>
+                                    <td type="number" id="vi_final_lesson_da" class="da" value="0"></td>
+                                    <td type="number" id="vi_final_lesson_vi" class="vi" value="0"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-6">
-                <h4 class="text-left">สำหรับคำนวณ Status รวม จากการเข้า Lesson ต่างๆ</h4>
+                <h4 class="text-center">สำหรับคำนวน Status รวม จากการเข้า Lesson ต่างๆ</h4>
 
                 <!-- Lesson Stat Calculate Table -->
                 <table class="table table-bordered mt-3">
@@ -120,7 +305,6 @@
                         </tr>
                     </tbody>
                 </table>
-
                 <!-- Turn Schedule Table -->
                 <div class="scrollable-table-container">
                     <table class="table table-bordered mt-3">
@@ -138,7 +322,7 @@
                                 <td>1</td>
                                 <td>
                                     <select id="schedule1" class="form-control">
-                                        <option value="-">-</option>
+                                        <option value="-" class="grey-header">-</option>
                                         <option value="Vo" class="vo" >Vo</option>
                                         <option value="Da" class="da" >Da</option>
                                         <option value="Vi" class="vi" >Vi</option>
@@ -166,7 +350,7 @@
                                 <td>4</td>
                                 <td>
                                     <select id="schedule4" class="form-control">
-                                        <option value="-">-</option>
+                                        <option value="-" class="grey-header">-</option>
                                         <option value="Vo" class="vo" >Vo</option>
                                         <option value="Da" class="da" >Da</option>
                                         <option value="Vi" class="vi" >Vi</option>
@@ -190,10 +374,10 @@
                                 <td>6</td>
                                 <td>
                                     <select id="schedule6" class="form-control">
-                                        <option value="-">-</option>
-                                        <option value="mid Vo" class="vo-header">mid Vo</option>
-                                        <option value="mid Da" class="da-header">mid Da</option>
-                                        <option value="mid Vi" class="vi-header">mid Vi</option>
+                                        <option value="-" class="grey-header">-</option>
+                                        <option value="Mid Vo" class="vo-header">Mid Vo</option>
+                                        <option value="Mid Da" class="da-header">Mid Da</option>
+                                        <option value="Mid Vi" class="vi-header">Mid Vi</option>
                                     </select>
                                 </td>
                                 <td id="vo6" class="vo">0</td>
@@ -204,7 +388,7 @@
                                 <td>7</td>
                                 <td>
                                     <select id="schedule7" class="form-control">
-                                        <option value="-">-</option>
+                                        <option value="-" class="grey-header">-</option>
                                         <option value="mid test bonus" class="grey-header">mid test bonus</option>
                                     </select>
                                 </td>
@@ -230,7 +414,7 @@
                                 <td>10</td>
                                 <td>
                                     <select id="schedule10" class="form-control">
-                                        <option value="-">-</option>
+                                        <option value="-" class="grey-header">-</option>
                                         <option value="Vo" class="vo" >Vo</option>
                                         <option value="Da" class="da" >Da</option>
                                         <option value="Vi" class="vi" >Vi</option>
@@ -254,7 +438,7 @@
                                 <td>12</td>
                                 <td>
                                     <select id="schedule12" class="form-control">
-                                        <option value="-">-</option>
+                                        <option value="-" class="grey-header">-</option>
                                         <option value="Vo" class="vo" >Vo</option>
                                         <option value="Da" class="da" >Da</option>
                                         <option value="Vi" class="vi" >Vi</option>
@@ -271,7 +455,7 @@
                                 <td>13</td>
                                 <td>
                                     <select id="schedule13" class="form-control">
-                                        <option value="-">-</option>
+                                        <option value="-" class="grey-header">-</option>
                                         <option value="Vo" class="vo" >Vo</option>
                                         <option value="Da" class="da" >Da</option>
                                         <option value="Vi" class="vi" >Vi</option>
@@ -295,7 +479,7 @@
                                 <td>15</td>
                                 <td>
                                     <select id="schedule15" class="form-control">
-                                        <option value="-">-</option>
+                                        <option value="-" class="grey-header">-</option>
                                         <option value="Final Vo" class="vo-header">Final Vo</option>
                                         <option value="Final Da" class="da-header">Final Da</option>
                                         <option value="Final Vi" class="vi-header">Final Vi</option>
@@ -332,6 +516,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="button-container">
+                    <button id="lessonButton" class="btn"><span class="btn-text">ตารางคะแนน Lesson</span></button>
+                </div>    
             </div>
         </div>
 
