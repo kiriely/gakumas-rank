@@ -1,70 +1,113 @@
-// Get all buttons and modals
-const buttons = document.querySelectorAll('.btn');
-const modals = document.querySelectorAll('.modal');
-const closeButtons = document.querySelectorAll('.close');
-
-// Add click event to all buttons
-buttons.forEach((button, index) => {
-    button.onclick = function() {
-        modals[index].style.display = "block";
+// Function to set a cookie
+function setCookie(name, value, days, path = '/') {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
     }
-});
+    document.cookie = name + "=" + (value || "") + expires + "; path=" + path;
+    console.log(`Cookie set: ${name} = ${value}; expires in ${days} days; path = ${path}`);
+}
 
-// Add click event to all close buttons
-closeButtons.forEach((closeButton, index) => {
-    closeButton.onclick = function() {
-        modals[index].style.display = "none";
+// Function to get a cookie
+function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
-});
+    return null;
+}
 
-// Close modal when clicking outside
-window.onclick = function(event) {
-    modals.forEach((modal) => {
-        if (event.target == modal) {
-            modal.style.display = "none";
+// Function to save input values to cookies
+function saveValuesToCookies() {
+    const inputs = ['Fvo', 'Fda', 'Fvi', 'base_vo', 'base_da', 'base_vi', 'bonus_vo', 'bonus_da', 'bonus_vi'];
+    inputs.forEach(inputId => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            setCookie(inputId, element.value, 365);
+            element.addEventListener('input', () => {
+                setCookie(inputId, element.value, 365);
+                console.log(`Cookie updated: ${inputId} = ${element.value}`);
+            });
         }
     });
 }
 
-// Existing calculate function and event listeners...
+// Function to load input values from cookies
+function loadValuesFromCookies() {
+    const inputs = ['Fvo', 'Fda', 'Fvi', 'base_vo', 'base_da', 'base_vi', 'bonus_vo', 'bonus_da', 'bonus_vi'];
+    inputs.forEach(inputId => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            const cookieValue = getCookie(inputId);
+            if (cookieValue) {
+                element.value = cookieValue;
+                console.log(`Loaded value for ${inputId}: ${cookieValue}`);
+                const event = new Event('input');
+                element.dispatchEvent(event);
+            }
+        }
+    });
+}
+
 function calculate() {
+    const maxIdolParameter = 1500;
+    const finalExamScoreRates = [
+        { upperBound: 5000, rate: 30 },
+        { upperBound: 10000, rate: 15 },
+        { upperBound: 20000, rate: 8 },
+        { upperBound: 30000, rate: 4 },
+        { upperBound: 40000, rate: 2 },
+        { upperBound: 100000000, rate: 1 },
+    ];
+
+    const calculateNecessaryFinalExamScoreForSpecificRating = (rating) => {
+        let restRating = rating;
+        for (const [index, finalExamScoreRate] of finalExamScoreRates.entries()) {
+            const beforeUpperBound = index === 0 ? 0 : finalExamScoreRates[index - 1].upperBound;
+            const maxRatingInThisRange = ((finalExamScoreRate.upperBound - beforeUpperBound) * finalExamScoreRate.rate) / 100;
+            if (restRating > maxRatingInThisRange) {
+                restRating -= maxRatingInThisRange;
+            } else {
+                return Math.ceil((restRating / finalExamScoreRate.rate) * 100) + beforeUpperBound;
+            }
+        }
+        throw new Error("`rating` is out of range.");
+    };
+
     // Get input values for final stat calculation
     let vo = parseInt(document.getElementById('Fvo').value) || 0;
     let da = parseInt(document.getElementById('Fda').value) || 0;
     let vi = parseInt(document.getElementById('Fvi').value) || 0;
 
     // Calculate totals for final stat
-    let total = 
-        (vo > 1500 ? 1500 : vo) + 
-        (da > 1500 ? 1500 : da) + 
-        (vi > 1500 ? 1500 : vi);
-    let total_bonus = 
-        (vo + 30 > 1500 ? 1500 : vo + 30) + 
-        (da + 30 > 1500 ? 1500 : da + 30) + 
-        (vi + 30 > 1500 ? 1500 : vi + 30);
+    let total = Math.min(vo, maxIdolParameter) + Math.min(da, maxIdolParameter) + Math.min(vi, maxIdolParameter);
+    let total_bonus = Math.min(vo + 30, maxIdolParameter) + Math.min(da + 30, maxIdolParameter) + Math.min(vi + 30, maxIdolParameter);
 
     // Display results for final stat
     document.getElementById('total').textContent = total;
     document.getElementById('total_bonus').textContent = total_bonus;
 
     // Calculate rank scores
-    let L6 = total_bonus;
+    const fixedRating = 1700 + Math.floor((total_bonus * 23) / 10);
+    const ranks = [
+        { name: "splus", necessaryRating: 14500 },
+        { name: "s", necessaryRating: 13000 },
+        { name: "aplus", necessaryRating: 11500 },
+        { name: "a", necessaryRating: 10000 },
+    ];
 
-    let rank_s = (L6 * 2.3 + 1700 + 3450 > 13000) 
-        ? Math.floor((13000 - ((L6 * 2.3) + 1700 + 3050)) / 0.04) + 20000 
-        : Math.floor((13000 - ((L6 * 2.3) + 1700 + 3450)) / 0.02) + 30000;
+    ranks.forEach(rank => {
+        const necessaryScore = calculateNecessaryFinalExamScoreForSpecificRating(Math.max(rank.necessaryRating - fixedRating, 0));
+        let displayText = necessaryScore < 10000 ? "pass" : Math.floor(necessaryScore).toLocaleString();
+        document.getElementById(`rank_${rank.name}`).textContent = displayText;
+    });
 
-    let rank_aplus = (L6 * 2.3 + 1700 + 2250 > 11500) 
-        ? "ผ่าน" 
-        : Math.floor((11500 - ((L6 * 2.3) + 1700 + ((5000 * 0.3) + (5000 * 0.15)))) / 0.08) + 10000;
-
-    let rank_a = (L6 * 2.3 + 1700 + (50000 * 0.3 + 5000 * 0.15) > 10000) 
-        ? "ผ่าน" 
-        : Math.floor((10000 - (L6 * 2.3 + 1700 + (50000 * 0.3 + 50000 * 0.15))) / 0.08) + 10000;
-
-    document.getElementById('rank_s').textContent = rank_s;
-    document.getElementById('rank_aplus').textContent = rank_aplus;
-    document.getElementById('rank_a').textContent = rank_a;
+    console.log("Calculation completed"); // For debugging
 }
 
 // Attach event listeners to input fields for final stat
@@ -76,6 +119,27 @@ document.getElementById('Fvi').addEventListener('input', calculate);
 calculate();
 
 // Lesson table bonus sync
+document.addEventListener('DOMContentLoaded', function () {
+    const bonusVo = document.getElementById('bonus_vo');
+    const bonusDa = document.getElementById('bonus_da');
+    const bonusVi = document.getElementById('bonus_vi');
+
+    const lessonBonusVo = document.getElementById('lesson_bonus_vo');
+    const lessonBonusDa = document.getElementById('lesson_bonus_da');
+    const lessonBonusVi = document.getElementById('lesson_bonus_vi');
+
+    function updateLessonBonus() {
+        lessonBonusVo.textContent = bonusVo.value;
+        lessonBonusDa.textContent = bonusDa.value;
+        lessonBonusVi.textContent = bonusVi.value;
+    }
+
+    bonusVo.addEventListener('input', updateLessonBonus);
+    bonusDa.addEventListener('input', updateLessonBonus);
+    bonusVi.addEventListener('input', updateLessonBonus);
+});
+
+// Lesson table calculate
 document.addEventListener('DOMContentLoaded', function () {
     const bonusVo = document.getElementById('bonus_vo');
     const bonusDa = document.getElementById('bonus_da');
@@ -290,6 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('da1').innerText = 0;
             document.getElementById('vi1').innerText = 0;
         }
+        calculateTotals();
     }
 
     function updateSchedule4() {
@@ -323,6 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('da4').innerText = 0;
             document.getElementById('vi4').innerText = 0;
         }
+        calculateTotals();
     }
 
     function updateSchedule6() {
@@ -344,6 +410,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('da6').innerText = 0;
             document.getElementById('vi6').innerText = 0;
         }
+        calculateTotals();
     }
 
     function updateSchedule7() {
@@ -357,6 +424,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('da7').innerText = 0;
             document.getElementById('vi7').innerText = 0;
         }
+        calculateTotals();
     }
 
     function updateSchedule10() {
@@ -390,6 +458,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('da10').innerText = 0;
             document.getElementById('vi10').innerText = 0;
         }
+        calculateTotals();
     }
 
     function updateSchedule12() {
@@ -423,6 +492,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('da12').innerText = 0;
             document.getElementById('vi12').innerText = 0;
         }
+        calculateTotals();
     }
 
     function updateSchedule13() {
@@ -456,6 +526,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('da13').innerText = 0;
             document.getElementById('vi13').innerText = 0;
         }
+        calculateTotals();
     }
 
     function updateSchedule15() {
@@ -477,6 +548,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('da15').innerText = 0;
             document.getElementById('vi15').innerText = 0;
         }
+        calculateTotals();
 
     }
     schedule1Select.addEventListener('change', updateSchedule1);
@@ -514,9 +586,9 @@ function calculateTotals() {
     document.getElementById('total_max_1500_vi').innerText = Math.min(totalVi, 1500);
 
     // Calculate and display over 1500 values with new logic
-    document.getElementById('over_1500_vo').innerText = totalVo <= 1500 ? "ไม่เกิน" : (totalVo - 1530);
-    document.getElementById('over_1500_da').innerText = totalDa <= 1500 ? "ไม่เกิน" : (totalDa - 1530);
-    document.getElementById('over_1500_vi').innerText = totalVi <= 1500 ? "ไม่เกิน" : (totalVi - 1530);
+    document.getElementById('over_1500_vo').innerText = totalVo <= 1500 ? "not exceed" : (totalVo - 1500);
+    document.getElementById('over_1500_da').innerText = totalDa <= 1500 ? "not exceed" : (totalDa - 1500);
+    document.getElementById('over_1500_vi').innerText = totalVi <= 1500 ? "not exceed" : (totalVi - 1500);
 
     // Calculate and display total of all stats
     const totalAll = Math.min(totalVo, 1500) + Math.min(totalDa, 1500) + Math.min(totalVi, 1500);
@@ -536,3 +608,91 @@ for (let i = 1; i <= 16; i++) {
 
 // Initial calculation
 calculateTotals();
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal control functions
+    function showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = "block";
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Reset inputs function
+    function resetInputs() {
+        const inputs = document.querySelectorAll('.table input');
+        inputs.forEach(input => {
+            input.value = '0';
+        });
+
+        console.log('Table reset to 0 complete');
+        calculate();  // Assuming this function exists elsewhere in your code
+    }
+
+    // Add event listeners for buttons
+    const usageButton = document.getElementById('usageButton');
+    const resetButton = document.getElementById('resetButton');
+    const lessonButton = document.getElementById('lessonButton');
+
+    if (usageButton) {
+        usageButton.addEventListener('click', function() {
+            showModal('usageModal');
+        });
+    }
+
+    if (resetButton) {
+        resetButton.addEventListener('click', resetInputs);
+    }
+
+    if (lessonButton) {
+        lessonButton.addEventListener('click', function() {
+            showModal('lessonModal');
+        });
+    }
+
+    // Modal close buttons
+    const closeButtons = document.querySelectorAll('.close');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            if (modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal')) {
+            closeModal(event.target.id);
+        }
+    });
+
+    // Persist active tab across page reloads
+    var tabEl = document.querySelectorAll('a[data-bs-toggle="tab"]');
+    tabEl.forEach(function(tab) {
+        tab.addEventListener('shown.bs.tab', function(event) {
+            var activeTab = event.target;
+            localStorage.setItem('activeTab', activeTab.id);
+        });
+    });
+
+    var lastActiveTab = localStorage.getItem('activeTab');
+    if (lastActiveTab) {
+        var tab = new bootstrap.Tab(document.getElementById(lastActiveTab));
+        tab.show();
+    }
+
+    // Load values from cookies after page loads
+    loadValuesFromCookies();
+    saveValuesToCookies();
+});

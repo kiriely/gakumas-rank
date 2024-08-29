@@ -55,7 +55,7 @@ body::before {
 
 
 .container .scrollable-table-container {
-    max-height: 350px; /* Adjust as needed */
+    max-height: 380px; /* Adjust as needed */
     overflow-y: auto;
 }
 
@@ -94,26 +94,27 @@ body::before {
 }
 /* Modal styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 1050; /* Higher z-index to ensure modals appear above other elements */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%;
     position: relative;
+    z-index: 1060; /* Higher z-index for modal content */
 }
+
 
 .close {
     color: #aaa;
@@ -168,3 +169,94 @@ body::before {
     text-align: center;
 }
 
+@media (min-width: 1200px) {
+    .container {
+        max-width: 80%;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        max-width: 70%;
+    }
+}
+
+.nav-tabs .nav-link {
+    color: #495057;
+    
+}
+.nav-tabs .nav-link.active {
+    color: #f39813;
+}
+
+.nav-tabs .nav-item {
+    flex-basis: 50%;
+}
+
+.nav-tabs .nav-link {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1 1 auto;
+    min-width: 200px;
+    max-width: 100%;
+    margin-bottom: 10px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+    .btn {
+        flex-basis: 100%;
+    }
+}
+
+.tab-pane {
+    visibility: hidden; /* Instead of display: none */
+    opacity: 0; /* Hide visually */
+    transition: visibility 0s, opacity 0.3s ease;
+}
+
+.tab-pane.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.nav-tabs {
+    display: flex;
+    width: 100%;
+}
+
+.nav-tabs .nav-item {
+    flex: 1;
+    display: flex;
+}
+
+.nav-tabs .nav-link {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .nav-tabs .nav-link {
+        font-size: 0.9rem; /* ลดขนาดตัวอักษรบนหน้าจอขนาดเล็กมาก */
+        padding: 0.5rem 0.25rem; /* ปรับ padding สำหรับหน้าจอขนาดเล็ก */
+    }
+}
